@@ -1,18 +1,29 @@
-import 'package:ecommerce_app/src/features/products_list/products_list_screen.dart';
-import 'package:ecommerce_app/src/localization/string_hardcoded.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart' show GoRouter, GoRoute;
+
+import 'features/products_list/products_list_screen.dart';
+import 'localization/string_hardcoded.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  Widget build(context) {
+    final goRouter = GoRouter(
+      routes: [
+        GoRoute(
+          path: '/',
+          builder: (context, state) => const ProductsListScreen(),
+        ),
+      ],
+    );
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       restorationScopeId: 'app',
+      routerConfig: goRouter,
       // * The home page of the app
-      home: const ProductsListScreen(),
-      onGenerateTitle: (BuildContext context) => 'My Shop'.hardcoded,
+      // home: const ProductsListScreen(),
+      onGenerateTitle: (context) => 'My Shop'.hardcoded,
       theme: ThemeData(
         // * Use this to toggle Material 3 (defaults to true since Flutter 3.16)
         useMaterial3: true,
