@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../features/products_list/products_list_screen.dart';
@@ -8,13 +9,17 @@ final goRouter = GoRouter(
   debugLogDiagnostics: true,
   routes: [
     GoRoute(
-        path: '/',
-        builder: (context, state) => const ProductsListScreen(),
-        routes: [
-          GoRoute(
-            path: 'cart',
-            builder: (context, state) => const ShoppingCartScreen(),
+      path: '/',
+      builder: (context, state) => const ProductsListScreen(),
+      routes: [
+        GoRoute(
+          path: 'cart',
+          pageBuilder: (context, state) => MaterialPage(
+            fullscreenDialog: true,
+            child: ShoppingCartScreen(),
           ),
-        ]),
+        ),
+      ],
+    ),
   ],
 );
