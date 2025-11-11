@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../localization/string_hardcoded.dart';
 import '../../models/app_user.dart';
+import '../../routing/app_router.dart';
 
 enum PopupMenuOption {
   signIn,
@@ -51,13 +52,13 @@ class MoreMenuButton extends StatelessWidget {
         // push to different routes based on selected option
         switch (option) {
           case PopupMenuOption.signIn:
-            context.go('/signIn');
+            context.goNamed(AppRoute.signIn.name);
             break;
           case PopupMenuOption.orders:
-            context.go('/orders');
+            context.goNamed(AppRoute.orders.name);
             break;
           case PopupMenuOption.account:
-            context.go('/account');
+            context.goNamed(AppRoute.account.name);
             break;
         }
       },
