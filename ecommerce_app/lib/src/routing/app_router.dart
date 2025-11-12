@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../features/account/account_screen.dart';
+import '../features/not_found/not_found_screen.dart';
 import '../features/orders_list/orders_list_screen.dart';
 import '../features/product_page/product_screen.dart';
 import '../features/products_list/products_list_screen.dart';
@@ -70,4 +71,7 @@ final goRouter = GoRouter(
       ],
     ),
   ],
+  //! GoRouter has its own error handling page, but we built our own to
+  //! provide an error builder to handle errors.
+  errorBuilder: (context, state) => const NotFoundScreen(),
 );
