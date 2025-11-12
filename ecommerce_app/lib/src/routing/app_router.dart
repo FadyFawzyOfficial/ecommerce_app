@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../features/account/account_screen.dart';
+import '../features/checkout/checkout_screen.dart';
 import '../features/leave_review_page/leave_review_screen.dart';
 import '../features/not_found/not_found_screen.dart';
 import '../features/orders_list/orders_list_screen.dart';
@@ -16,6 +17,7 @@ enum AppRoute {
   product,
   review,
   cart,
+  checkout,
   orders,
   account,
   signIn,
@@ -55,6 +57,16 @@ final goRouter = GoRouter(
             fullscreenDialog: true,
             child: ShoppingCartScreen(),
           ),
+          routes: [
+            GoRoute(
+              path: 'checkout',
+              name: AppRoute.checkout.name,
+              pageBuilder: (context, state) => MaterialPage(
+                fullscreenDialog: true,
+                child: CheckoutScreen(),
+              ),
+            ),
+          ],
         ),
         GoRoute(
           path: 'orders',
