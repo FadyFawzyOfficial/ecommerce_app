@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../features/account/account_screen.dart';
 import '../features/orders_list/orders_list_screen.dart';
+import '../features/product_page/product_screen.dart';
 import '../features/products_list/products_list_screen.dart';
 import '../features/shopping_cart/shopping_cart_screen.dart';
 import '../features/sign_in/email_password_sign_in_screen.dart';
@@ -10,6 +11,7 @@ import '../features/sign_in/email_password_sign_in_state.dart';
 
 enum AppRoute {
   home,
+  product,
   cart,
   orders,
   account,
@@ -25,6 +27,12 @@ final goRouter = GoRouter(
       name: AppRoute.home.name,
       builder: (context, state) => const ProductsListScreen(),
       routes: [
+        GoRoute(
+          path: 'product/:id',
+          name: AppRoute.product.name,
+          builder: (context, state) =>
+              ProductScreen(productId: state.pathParameters['id']!),
+        ),
         GoRoute(
           path: 'cart',
           name: AppRoute.cart.name,
