@@ -25,7 +25,7 @@ enum AppRoute {
 
 final goRouter = GoRouter(
   initialLocation: '/',
-  debugLogDiagnostics: true,
+  debugLogDiagnostics: false,
   routes: [
     GoRoute(
       path: '/',
@@ -55,7 +55,7 @@ final goRouter = GoRouter(
           name: AppRoute.cart.name,
           pageBuilder: (context, state) => MaterialPage(
             fullscreenDialog: true,
-            child: ShoppingCartScreen(),
+            child: const ShoppingCartScreen(),
           ),
           routes: [
             GoRoute(
@@ -63,7 +63,7 @@ final goRouter = GoRouter(
               name: AppRoute.checkout.name,
               pageBuilder: (context, state) => MaterialPage(
                 fullscreenDialog: true,
-                child: CheckoutScreen(),
+                child: const CheckoutScreen(),
               ),
             ),
           ],
@@ -73,7 +73,7 @@ final goRouter = GoRouter(
           name: AppRoute.orders.name,
           pageBuilder: (context, state) => MaterialPage(
             fullscreenDialog: true,
-            child: OrdersListScreen(),
+            child: const OrdersListScreen(),
           ),
         ),
         GoRoute(
@@ -81,7 +81,7 @@ final goRouter = GoRouter(
           name: AppRoute.account.name,
           pageBuilder: (context, state) => MaterialPage(
             fullscreenDialog: true,
-            child: AccountScreen(),
+            child: const AccountScreen(),
           ),
         ),
         GoRoute(
@@ -89,7 +89,7 @@ final goRouter = GoRouter(
           name: AppRoute.signIn.name,
           pageBuilder: (context, state) => MaterialPage(
             fullscreenDialog: true,
-            child: EmailPasswordSignInScreen(
+            child: const EmailPasswordSignInScreen(
               formType: EmailPasswordSignInFormType.signIn,
             ),
           ),
