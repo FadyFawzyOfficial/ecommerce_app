@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../common_widgets/alert_dialogs.dart';
+import '../../../../common_widgets/async_value_widget.dart';
 import '../../../../common_widgets/custom_image.dart';
 import '../../../../common_widgets/item_quantity_selector.dart';
 import '../../../../common_widgets/responsive_two_column_layout.dart';
@@ -32,19 +33,20 @@ class ShoppingCartItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Completed: Read from data source using a fake repository
-    final productsRepository = ref.watch(productsRepositoryProvider);
-    final product = productsRepository.getProduct(item.productId)!;
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: Sizes.p8),
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(Sizes.p16),
-          child: ShoppingCartItemContents(
-            product: product,
-            item: item,
-            itemIndex: itemIndex,
-            isEditable: isEditable,
+    final productStream = ref.watch(productStreamProvider(item.productId));
+    return AsyncValueWidget<Product?>(
+      asyncValue: productStream,
+      data: (product) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: Sizes.p8),
+        child: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(Sizes.p16),
+            child: ShoppingCartItemContents(
+              product: product!,
+              item: item,
+              itemIndex: itemIndex,
+              isEditable: isEditable,
+            ),
           ),
         ),
       ),
