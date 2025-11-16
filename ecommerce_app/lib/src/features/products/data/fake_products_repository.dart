@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../constants/test_products.dart';
@@ -29,18 +32,24 @@ class FakeProductsRepository {
 final productsRepositoryProvider =
     Provider<FakeProductsRepository>((ref) => FakeProductsRepository());
 
-final productsStreamProvider = StreamProvider<List<Product>>((ref) {
+final productsStreamProvider = StreamProvider.autoDispose<List<Product>>((ref) {
+  // debugPrint('productsStreamProvider created');
   final productsRepository = ref.watch(productsRepositoryProvider);
   return productsRepository.watchProducts();
 });
 
-final productsFutureProvider = FutureProvider<List<Product>>((ref) {
+final productsFutureProvider = FutureProvider.autoDispose<List<Product>>((ref) {
+  // debugPrint('productsFutureProvider created');
   final productsRepository = ref.watch(productsRepositoryProvider);
   return productsRepository.fetchProducts();
 });
 
 final productStreamProvider =
-    StreamProvider.family<Product?, String>((ref, id) {
+    StreamProvider.autoDispose.family<Product?, String>((ref, id) {
+  // debugPrint('productStreamProvider created with id: $id');
+  // ref.onDispose(() => debugPrint('productStreamProvider disposed'));
+  // final keepAliveLink = ref.keepAlive();
+  // Timer(const Duration(seconds: 5), () => keepAliveLink.close());
   final productsRepository = ref.watch(productsRepositoryProvider);
   return productsRepository.watchProduct(id);
 });
