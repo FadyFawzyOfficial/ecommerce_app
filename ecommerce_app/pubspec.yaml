@@ -18,6 +18,8 @@ dependencies:
   flutter_rating_bar: 4.0.1
   # A declarative router for Flutter based on Navigation 2 supporting deep linking, data-driven routes and more.
   go_router: ^17.0.0
+  # A reactive caching and data-binding framework. Riverpod makes working with asynchronous code a breeze. 
+  flutter_riverpod: ^3.0.3
 
 dev_dependencies:
   flutter_test:
