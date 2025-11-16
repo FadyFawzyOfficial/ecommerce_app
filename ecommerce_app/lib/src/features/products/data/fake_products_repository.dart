@@ -11,9 +11,16 @@ class FakeProductsRepository {
   Product? getProduct(String id) =>
       _products.firstWhere((product) => product.id == id);
 
-  Future<List<Product>> fetchProducts() async => Future.value(_products);
+  Future<List<Product>> fetchProducts() async {
+    await Future.delayed(const Duration(seconds: 2));
+    // throw Exception('Failed to fetch products');
+    return Future.value(_products);
+  }
 
-  Stream<List<Product>> watchProducts() => Stream.value(_products);
+  Stream<List<Product>> watchProducts() async* {
+    await Future.delayed(const Duration(seconds: 2));
+    yield _products;
+  }
 
   Stream<Product?> watchProduct(String id) => watchProducts()
       .map((products) => products.firstWhere((product) => product.id == id));
