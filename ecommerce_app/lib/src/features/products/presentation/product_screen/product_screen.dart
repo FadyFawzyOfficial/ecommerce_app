@@ -17,31 +17,33 @@ import 'leave_review_action.dart';
 import 'product_average_rating.dart';
 
 /// Shows the product page for a given product ID.
-class ProductScreen extends ConsumerWidget {
+class ProductScreen extends StatelessWidget {
   const ProductScreen({super.key, required this.productId});
   final String productId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // Completed: Read from data source using a fake repository
-    final productsRepository = ref.watch(productsRepositoryProvider);
-    final product = productsRepository.getProduct(productId);
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: const HomeAppBar(),
-      // ignore: unnecessary_null_comparison
-      body: product == null
-          ? EmptyPlaceholderWidget(
-              message: 'Product not found'.hardcoded,
-            )
-          : CustomScrollView(
-              slivers: [
-                ResponsiveSliverCenter(
-                  padding: const EdgeInsets.all(Sizes.p16),
-                  child: ProductDetails(product: product),
-                ),
-                ProductReviewsList(productId: productId),
-              ],
-            ),
+      body: Consumer(
+        builder: (context, ref, child) {
+          final productsRepository = ref.watch(productsRepositoryProvider);
+          final product = productsRepository.getProduct(productId);
+          return product == null
+              ? EmptyPlaceholderWidget(
+                  message: 'Product not found'.hardcoded,
+                )
+              : CustomScrollView(
+                  slivers: [
+                    ResponsiveSliverCenter(
+                      padding: const EdgeInsets.all(Sizes.p16),
+                      child: ProductDetails(product: product),
+                    ),
+                    ProductReviewsList(productId: productId),
+                  ],
+                );
+        },
+      ),
     );
   }
 }
