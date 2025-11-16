@@ -1,3 +1,5 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../../../constants/test_products.dart';
 import '../domain/product.dart';
 
@@ -21,3 +23,6 @@ class FakeProductsRepository {
   Stream<Product?> watchProduct(String id) => watchProducts()
       .map((products) => products.firstWhere((product) => product.id == id));
 }
+
+final productsRepositoryProvider =
+    Provider<FakeProductsRepository>((ref) => FakeProductsRepository.instance);
