@@ -5,6 +5,7 @@ import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../common_widgets/async_value_widget.dart';
 import '../../../../common_widgets/error_message_widget.dart';
 import '../../../../constants/app_sizes.dart';
 import '../../../../localization/string_hardcoded.dart';
@@ -19,7 +20,8 @@ class ProductsGrid extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final productsStream = ref.watch(productsFutureProvider);
-    return productsStream.when(
+    return AsyncValueWidget(
+      asyncValue: productsStream,
       data: (products) => products.isEmpty
           ? Center(
               child: Text(
@@ -40,9 +42,6 @@ class ProductsGrid extends ConsumerWidget {
                 );
               },
             ),
-      error: (error, stackTrace) =>
-          Center(child: ErrorMessageWidget(error.toString())),
-      loading: () => const Center(child: CircularProgressIndicator()),
     );
   }
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../common_widgets/async_value_widget.dart';
 import '../../../../common_widgets/custom_image.dart';
 import '../../../../common_widgets/empty_placeholder_widget.dart';
-import '../../../../common_widgets/error_message_widget.dart';
 import '../../../../common_widgets/responsive_center.dart';
 import '../../../../common_widgets/responsive_two_column_layout.dart';
 import '../../../../constants/app_sizes.dart';
@@ -29,7 +29,8 @@ class ProductScreen extends StatelessWidget {
       body: Consumer(
         builder: (context, ref, _) {
           final productStream = ref.watch(productStreamProvider(productId));
-          return productStream.when(
+          return AsyncValueWidget(
+            asyncValue: productStream,
             data: (product) => product == null
                 ? EmptyPlaceholderWidget(
                     message: 'Product not found'.hardcoded,
@@ -43,9 +44,6 @@ class ProductScreen extends StatelessWidget {
                       ProductReviewsList(productId: productId),
                     ],
                   ),
-            error: (error, stackTrace) =>
-                Center(child: ErrorMessageWidget(error.toString())),
-            loading: () => const Center(child: CircularProgressIndicator()),
           );
         },
       ),
