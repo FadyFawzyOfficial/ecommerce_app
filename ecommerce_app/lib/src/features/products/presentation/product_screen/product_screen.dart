@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../common_widgets/custom_image.dart';
 import '../../../../common_widgets/empty_placeholder_widget.dart';
+import '../../../../common_widgets/error_message_widget.dart';
 import '../../../../common_widgets/responsive_center.dart';
 import '../../../../common_widgets/responsive_two_column_layout.dart';
 import '../../../../constants/app_sizes.dart';
@@ -26,22 +27,26 @@ class ProductScreen extends StatelessWidget {
     return Scaffold(
       appBar: const HomeAppBar(),
       body: Consumer(
-        builder: (context, ref, child) {
-          final productsRepository = ref.watch(productsRepositoryProvider);
-          final product = productsRepository.getProduct(productId);
-          return product == null
-              ? EmptyPlaceholderWidget(
-                  message: 'Product not found'.hardcoded,
-                )
-              : CustomScrollView(
-                  slivers: [
-                    ResponsiveSliverCenter(
-                      padding: const EdgeInsets.all(Sizes.p16),
-                      child: ProductDetails(product: product),
-                    ),
-                    ProductReviewsList(productId: productId),
-                  ],
-                );
+        builder: (context, ref, _) {
+          final productStream = ref.watch(productStreamProvider(productId));
+          return productStream.when(
+            data: (product) => product == null
+                ? EmptyPlaceholderWidget(
+                    message: 'Product not found'.hardcoded,
+                  )
+                : CustomScrollView(
+                    slivers: [
+                      ResponsiveSliverCenter(
+                        padding: const EdgeInsets.all(Sizes.p16),
+                        child: ProductDetails(product: product),
+                      ),
+                      ProductReviewsList(productId: productId),
+                    ],
+                  ),
+            error: (error, stackTrace) =>
+                Center(child: ErrorMessageWidget(error.toString())),
+            loading: () => const Center(child: CircularProgressIndicator()),
+          );
         },
       ),
     );
