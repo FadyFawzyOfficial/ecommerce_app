@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../constants/app_sizes.dart';
@@ -11,14 +12,14 @@ import '../../data/fake_products_repository.dart';
 import 'product_card.dart';
 
 /// A widget that displays the list of products that match the search query.
-class ProductsGrid extends StatelessWidget {
+class ProductsGrid extends ConsumerWidget {
   const ProductsGrid({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // Completed: Read from data source using a fake repository
-    // TODO: Replace with a real data source
-    final products = FakeProductsRepository.instance.getProducts();
+    final productsRepository = ref.watch(productsRepositoryProvider);
+    final products = productsRepository.getProducts();
     return products.isEmpty
         ? Center(
             child: Text(

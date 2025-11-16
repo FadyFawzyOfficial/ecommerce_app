@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../common_widgets/custom_image.dart';
 import '../../../../common_widgets/empty_placeholder_widget.dart';
@@ -16,15 +17,15 @@ import 'leave_review_action.dart';
 import 'product_average_rating.dart';
 
 /// Shows the product page for a given product ID.
-class ProductScreen extends StatelessWidget {
+class ProductScreen extends ConsumerWidget {
   const ProductScreen({super.key, required this.productId});
   final String productId;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // Completed: Read from data source using a fake repository
-    // TODO: Replace with a real data source
-    final product = FakeProductsRepository.instance.getProduct(productId);
+    final productsRepository = ref.watch(productsRepositoryProvider);
+    final product = productsRepository.getProduct(productId);
     return Scaffold(
       appBar: const HomeAppBar(),
       // ignore: unnecessary_null_comparison

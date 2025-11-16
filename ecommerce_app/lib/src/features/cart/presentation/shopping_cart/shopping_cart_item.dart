@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../common_widgets/alert_dialogs.dart';
@@ -14,7 +15,7 @@ import '../../../products/domain/product.dart';
 import '../../domain/item.dart';
 
 /// Shows a shopping cart item (or loading/error UI if needed)
-class ShoppingCartItem extends StatelessWidget {
+class ShoppingCartItem extends ConsumerWidget {
   const ShoppingCartItem({
     super.key,
     required this.item,
@@ -30,10 +31,10 @@ class ShoppingCartItem extends StatelessWidget {
   final bool isEditable;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // Completed: Read from data source using a fake repository
-    // TODO: Replace with a real data source
-    final product = FakeProductsRepository.instance.getProduct(item.productId)!;
+    final productsRepository = ref.watch(productsRepositoryProvider);
+    final product = productsRepository.getProduct(item.productId)!;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: Sizes.p8),
       child: Card(
