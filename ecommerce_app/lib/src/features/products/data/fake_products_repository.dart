@@ -5,10 +5,19 @@ class FakeProductsRepository {
   static final FakeProductsRepository instance =
       FakeProductsRepository._instance();
 
+  final _products = kTestProducts;
+
   FakeProductsRepository._instance();
 
-  List<Product> getProducts() => kTestProducts;
+  List<Product> getProducts() => _products;
 
-  Product? getProduct(ProductID id) =>
-      kTestProducts.firstWhere((product) => product.id == id);
+  Product? getProduct(String id) =>
+      _products.firstWhere((product) => product.id == id);
+
+  Future<List<Product>> fetchProducts() async => Future.value(_products);
+
+  Stream<List<Product>> watchProducts() => Stream.value(_products);
+
+  Stream<Product?> watchProduct(String id) => watchProducts()
+      .map((products) => products.firstWhere((product) => product.id == id));
 }
