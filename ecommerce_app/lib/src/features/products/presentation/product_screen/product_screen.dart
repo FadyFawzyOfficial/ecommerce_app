@@ -1,18 +1,19 @@
-import 'package:ecommerce_app/src/constants/test_products.dart';
-import 'package:ecommerce_app/src/localization/string_hardcoded.dart';
-import 'package:ecommerce_app/src/utils/currency_formatter.dart';
 import 'package:flutter/material.dart';
-import 'package:ecommerce_app/src/common_widgets/custom_image.dart';
-import 'package:ecommerce_app/src/common_widgets/responsive_center.dart';
-import 'package:ecommerce_app/src/common_widgets/responsive_two_column_layout.dart';
-import 'package:ecommerce_app/src/constants/app_sizes.dart';
-import 'package:ecommerce_app/src/features/products/presentation/home_app_bar/home_app_bar.dart';
-import 'package:ecommerce_app/src/common_widgets/empty_placeholder_widget.dart';
-import 'package:ecommerce_app/src/features/cart/presentation/add_to_cart/add_to_cart_widget.dart';
-import 'package:ecommerce_app/src/features/products/presentation/product_screen/leave_review_action.dart';
-import 'package:ecommerce_app/src/features/products/presentation/product_screen/product_average_rating.dart';
-import 'package:ecommerce_app/src/features/review/presentation/product_reviews/product_reviews_list.dart';
-import 'package:ecommerce_app/src/features/products/domain/product.dart';
+
+import '../../../../common_widgets/custom_image.dart';
+import '../../../../common_widgets/empty_placeholder_widget.dart';
+import '../../../../common_widgets/responsive_center.dart';
+import '../../../../common_widgets/responsive_two_column_layout.dart';
+import '../../../../constants/app_sizes.dart';
+import '../../../../localization/string_hardcoded.dart';
+import '../../../../utils/currency_formatter.dart';
+import '../../../cart/presentation/add_to_cart/add_to_cart_widget.dart';
+import '../../../review/presentation/product_reviews/product_reviews_list.dart';
+import '../../data/fake_products_repository.dart';
+import '../../domain/product.dart';
+import '../home_app_bar/home_app_bar.dart';
+import 'leave_review_action.dart';
+import 'product_average_rating.dart';
 
 /// Shows the product page for a given product ID.
 class ProductScreen extends StatelessWidget {
@@ -21,9 +22,9 @@ class ProductScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Read from data source
-    final product =
-        kTestProducts.firstWhere((product) => product.id == productId);
+    // Completed: Read from data source using a fake repository
+    // TODO: Replace with a real data source
+    final product = FakeProductsRepository.instance.getProduct(productId);
     return Scaffold(
       appBar: const HomeAppBar(),
       // ignore: unnecessary_null_comparison

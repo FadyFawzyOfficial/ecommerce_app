@@ -8,4 +8,7 @@ class FakeProductsRepository {
   FakeProductsRepository._instance();
 
   List<Product> getProducts() => kTestProducts;
+
+  Product? getProduct(ProductID id) =>
+      kTestProducts.firstWhere((product) => product.id == id);
 }
