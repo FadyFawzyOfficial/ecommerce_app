@@ -1,30 +1,37 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../utils/in_memory_store.dart';
 import '../domain/app_user.dart';
 
 class FakeAuthRepository {
-  AppUser? get currentAppUser =>
-      null; // ToDo: Update this to return the current user
+  final _authState = InMemoryStore<AppUser?>(null);
 
-  Stream<AppUser?> get authStateChanges =>
-      Stream.value(null); // ToDo: Update this to return the auth state changes
+  AppUser? get currentUser => _authState.value;
+
+  Stream<AppUser?> get authStateChanges => _authState.stream;
 
   Future<void> signInWithEmailAndPassword(String email, String password) async {
-    // ToDo: Implement this method
+    if (currentUser == null) _authenticateUser(email);
   }
 
   Future<void> createUserWithEmailAndPassword(
       String email, String password) async {
-    // ToDo: Implement this method
+    if (currentUser == null) _authenticateUser(email);
   }
 
-  Future<void> signOut() async {
-    // ToDo: Implement this method
-  }
+  Future<void> signOut() async => _authState.value = null;
+
+  void _authenticateUser(String email) => _authState.value =
+      AppUser(uid: email.split('').reversed.join(''), email: email);
+
+  void dispose() => _authState.dispose();
 }
 
-final fakeAuthRepositoryProvider =
-    Provider<FakeAuthRepository>((ref) => FakeAuthRepository());
+final fakeAuthRepositoryProvider = Provider<FakeAuthRepository>((ref) {
+  final authRepository = FakeAuthRepository();
+  ref.onDispose(authRepository.dispose);
+  return authRepository;
+});
 
 final authStateChangesStreamProvider = StreamProvider.autoDispose<AppUser?>(
     (ref) => ref.watch(fakeAuthRepositoryProvider).authStateChanges);

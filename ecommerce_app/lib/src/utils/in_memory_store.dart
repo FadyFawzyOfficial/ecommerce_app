@@ -15,7 +15,7 @@ class InMemoryStore<T> {
   T get value => _subject.value;
 
   /// A setter for updating the value.
-  void setValue(T value) => _subject.add(value);
+  set value(T value) => _subject.add(value);
 
   /// Don't forget to call this when done.
   void dispose() => _subject.close();
