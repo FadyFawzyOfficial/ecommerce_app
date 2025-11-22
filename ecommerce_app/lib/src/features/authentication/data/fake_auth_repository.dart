@@ -19,7 +19,11 @@ class FakeAuthRepository {
     if (currentUser == null) _authenticateUser(email);
   }
 
-  Future<void> signOut() async => _authState.value = null;
+  Future<void> signOut() async {
+    await Future.delayed(const Duration(seconds: 3));
+    throw Exception('User not authenticated');
+    // _authState.value = null;
+  }
 
   void _authenticateUser(String email) => _authState.value =
       AppUser(uid: email.split('').reversed.join(''), email: email);
