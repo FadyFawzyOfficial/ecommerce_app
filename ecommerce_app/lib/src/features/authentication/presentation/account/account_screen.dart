@@ -7,8 +7,8 @@ import '../../../../common_widgets/alert_dialogs.dart';
 import '../../../../common_widgets/responsive_center.dart';
 import '../../../../constants/app_sizes.dart';
 import '../../../../localization/string_hardcoded.dart';
-import '../../data/fake_auth_repository.dart';
 import '../../domain/app_user.dart';
+import 'account_screen_controller.dart';
 
 /// Simple account screen showing some user info and a logout button.
 class AccountScreen extends ConsumerWidget {
@@ -16,29 +16,36 @@ class AccountScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(accountScreenControllerProvider);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Account'.hardcoded),
+        title: state.isLoading
+            ? const CircularProgressIndicator()
+            : Text('Account'.hardcoded),
         actions: [
           ActionTextButton(
             text: 'Logout'.hardcoded,
-            onPressed: () async {
-              // * Get the navigator beforehand to prevent this warning:
-              // * Don't use 'BuildContext's across async gaps.
-              // * More info here: https://youtu.be/bzWaMpD1LHY
-              final goRouter = GoRouter.of(context);
-              final logout = await showAlertDialog(
-                context: context,
-                title: 'Are you sure?'.hardcoded,
-                cancelActionText: 'Cancel'.hardcoded,
-                defaultActionText: 'Logout'.hardcoded,
-              );
-              if (logout == true) {
-                ref.read(fakeAuthRepositoryProvider).signOut();
-                // TODO: only pop on success.
-                goRouter.pop();
-              }
-            },
+            onPressed: state.isLoading
+                ? null
+                : () async {
+                    // * Get the navigator beforehand to prevent this warning:
+                    // * Don't use 'BuildContext's across async gaps.
+                    // * More info here: https://youtu.be/bzWaMpD1LHY
+                    final goRouter = GoRouter.of(context);
+                    final logout = await showAlertDialog(
+                      context: context,
+                      title: 'Are you sure?'.hardcoded,
+                      cancelActionText: 'Cancel'.hardcoded,
+                      defaultActionText: 'Logout'.hardcoded,
+                    );
+                    if (logout == true) {
+                      ref
+                          .read(accountScreenControllerProvider.notifier)
+                          .signOut();
+                      // TODO: only pop on success.
+                      goRouter.pop();
+                    }
+                  },
           ),
         ],
       ),
