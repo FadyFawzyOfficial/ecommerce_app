@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../common_widgets/action_text_button.dart';
@@ -6,14 +7,15 @@ import '../../../../common_widgets/alert_dialogs.dart';
 import '../../../../common_widgets/responsive_center.dart';
 import '../../../../constants/app_sizes.dart';
 import '../../../../localization/string_hardcoded.dart';
+import '../../data/fake_auth_repository.dart';
 import '../../domain/app_user.dart';
 
 /// Simple account screen showing some user info and a logout button.
-class AccountScreen extends StatelessWidget {
+class AccountScreen extends ConsumerWidget {
   const AccountScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Account'.hardcoded),
@@ -32,7 +34,8 @@ class AccountScreen extends StatelessWidget {
                 defaultActionText: 'Logout'.hardcoded,
               );
               if (logout == true) {
-                // TODO: Sign out the user.
+                ref.read(fakeAuthRepositoryProvider).signOut();
+                // TODO: only pop on success.
                 goRouter.pop();
               }
             },
