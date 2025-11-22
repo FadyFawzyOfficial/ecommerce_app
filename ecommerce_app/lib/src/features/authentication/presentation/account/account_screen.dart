@@ -7,6 +7,7 @@ import '../../../../common_widgets/alert_dialogs.dart';
 import '../../../../common_widgets/responsive_center.dart';
 import '../../../../constants/app_sizes.dart';
 import '../../../../localization/string_hardcoded.dart';
+import '../../../../utils/async_value_ui.dart';
 import '../../domain/app_user.dart';
 import 'account_screen_controller.dart';
 
@@ -16,15 +17,8 @@ class AccountScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen(accountScreenControllerProvider, (previousState, currentState) {
-      if (currentState.hasError) {
-        showExceptionAlertDialog(
-          context: context,
-          title: 'Error'.hardcoded,
-          exception: currentState.error,
-        );
-      }
-    });
+    ref.listen(accountScreenControllerProvider,
+        (_, state) => state.showAlertDialogOnError(context));
 
     final state = ref.watch(accountScreenControllerProvider);
     return Scaffold(
