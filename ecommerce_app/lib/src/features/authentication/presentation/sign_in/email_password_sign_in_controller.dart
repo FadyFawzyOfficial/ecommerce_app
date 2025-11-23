@@ -20,7 +20,7 @@ class EmailPasswordSignInController
     state = state.copyWith(value: value);
     return !value.hasError;
   }
-
+ 
   Future<void> _authenticate(String email, String password) async {
     switch (state.formType) {
       case EmailPasswordSignInFormType.signIn:
@@ -30,8 +30,8 @@ class EmailPasswordSignInController
     }
   }
 
-  void updateFormType(EmailPasswordSignInFormType formType) => state =
-      state.copyWith(formType: formType, value: const AsyncValue.data(null));
+  void updateFormType(EmailPasswordSignInFormType formType) =>
+      state = state.copyWith(formType: formType);
 }
 
 final emailPasswordSignInControllerProvider = StateNotifierProvider.autoDispose
