@@ -8,7 +8,7 @@ import '../../../../common_widgets/responsive_center.dart';
 import '../../../../constants/app_sizes.dart';
 import '../../../../localization/string_hardcoded.dart';
 import '../../../../utils/async_value_ui.dart';
-import '../../domain/app_user.dart';
+import '../../data/fake_auth_repository.dart';
 import 'account_screen_controller.dart';
 
 /// Simple account screen showing some user info and a logout button.
@@ -62,14 +62,14 @@ class AccountScreen extends ConsumerWidget {
 }
 
 /// Simple user data table showing the uid and email
-class UserDataTable extends StatelessWidget {
+class UserDataTable extends ConsumerWidget {
   const UserDataTable({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final style = Theme.of(context).textTheme.titleSmall!;
-    // TODO: get user from auth repository
-    const user = AppUser(uid: '123', email: 'test@test.com');
+    // Completed: get user from auth repository
+    final user = ref.watch(authStateChangesStreamProvider).value;
     return DataTable(
       columns: [
         DataColumn(
@@ -88,12 +88,12 @@ class UserDataTable extends StatelessWidget {
       rows: [
         _makeDataRow(
           'uid'.hardcoded,
-          user.uid,
+          user?.uid ?? '',
           style,
         ),
         _makeDataRow(
           'email'.hardcoded,
-          user.email ?? '',
+          user?.email ?? '',
           style,
         ),
       ],
