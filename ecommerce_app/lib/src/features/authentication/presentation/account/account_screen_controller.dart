@@ -1,5 +1,4 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart'
-    show AsyncValue, AsyncValueExtensions;
+import 'package:flutter_riverpod/flutter_riverpod.dart' show AsyncValue;
 import 'package:flutter_riverpod/legacy.dart'
     show StateNotifier, StateNotifierProvider;
 
@@ -12,7 +11,7 @@ class AccountScreenController extends StateNotifier<AsyncValue> {
       : _authRepository = authRepository,
         super(const AsyncValue.data(null));
 
-  Future<bool> signOut() async {
+  Future<void> signOut() async {
     //   try {
     //     state = const AsyncValue.loading();
     //     await _authRepository.signOut();
@@ -26,7 +25,6 @@ class AccountScreenController extends StateNotifier<AsyncValue> {
 
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(_authRepository.signOut);
-    return !state.hasError;
   }
 }
 

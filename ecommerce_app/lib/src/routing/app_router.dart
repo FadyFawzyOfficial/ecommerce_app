@@ -12,6 +12,7 @@ import '../features/orders/presentation/order_list/orders_list_screen.dart';
 import '../features/products/presentation/product_screen/product_screen.dart';
 import '../features/products/presentation/products_list/products_list_screen.dart';
 import '../features/review/presentation/leave_review_page/leave_review_screen.dart';
+import 'go_router_refresh_stream.dart';
 import 'not_found_screen.dart';
 
 enum AppRoute {
@@ -37,7 +38,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       if (isSingedIn) {
         //! Navigating by URL on Flutter web is the same as restarting the app from scratch,
         //! so the state of our InMemoryStore will be reset to null -> we're no longer signed in.
-        if (path == '/signin') {
+        if (path == '/signIn') {
           return '/';
         }
       } else {
@@ -48,6 +49,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
 
       return null;
     },
+    refreshListenable: GoRouterRefreshStream(authRepository.authStateChanges),
     routes: [
       GoRoute(
         path: '/',
@@ -107,7 +109,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             ),
           ),
           GoRoute(
-            path: 'signin',
+            path: 'signIn',
             name: AppRoute.signIn.name,
             pageBuilder: (context, state) => MaterialPage(
               fullscreenDialog: true,

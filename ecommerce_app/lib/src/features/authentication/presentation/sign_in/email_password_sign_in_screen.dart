@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../common_widgets/custom_text_button.dart';
 import '../../../../common_widgets/primary_button.dart';
@@ -30,7 +29,6 @@ class EmailPasswordSignInScreen extends StatelessWidget {
       appBar: AppBar(title: Text('Sign In'.hardcoded)),
       body: EmailPasswordSignInContents(
         formType: formType,
-        onSignedIn: () => context.pop(),
       ),
     );
   }
@@ -87,6 +85,8 @@ class _EmailPasswordSignInContentsState
       final controller = ref.read(
           emailPasswordSignInControllerProvider(widget.formType).notifier);
       final success = await controller.submit(email, password);
+      //! We'll leave this as it is, because we'll make use of this callback later on.
+      //! When we reuse this signIn form for checkout flows.
       if (success) widget.onSignedIn?.call();
     }
   }
@@ -117,7 +117,7 @@ class _EmailPasswordSignInContentsState
   @override
   Widget build(BuildContext context) {
     ref.listen(
-        emailPasswordSignInControllerProvider(widget.formType)
+      emailPasswordSignInControllerProvider(widget.formType)
           .select((state) => state.value),
       (_, state) => state.showAlertDialogOnError(context),
     );
