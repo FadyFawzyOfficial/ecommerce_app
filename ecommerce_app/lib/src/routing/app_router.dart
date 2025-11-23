@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../features/authentication/data/fake_auth_repository.dart';
 import '../features/authentication/presentation/account/account_screen.dart';
 import '../features/authentication/presentation/sign_in/email_password_sign_in_screen.dart';
 import '../features/authentication/presentation/sign_in/email_password_sign_in_state.dart';
@@ -25,9 +26,28 @@ enum AppRoute {
 }
 
 final goRouterProvider = Provider<GoRouter>((ref) {
+  final authRepository = ref.watch(fakeAuthRepositoryProvider);
+
   return GoRouter(
     initialLocation: '/',
     debugLogDiagnostics: false,
+    redirect: (_, state) {
+      final isSingedIn = authRepository.currentUser != null;
+      final path = state.uri.path;
+      if (isSingedIn) {
+        //! Navigating by URL on Flutter web is the same as restarting the app from scratch,
+        //! so the state of our InMemoryStore will be reset to null -> we're no longer signed in.
+        if (path == '/signin') {
+          return '/';
+        }
+      } else {
+        if (path == '/account' || path == '/orders') {
+          return '/';
+        }
+      }
+
+      return null;
+    },
     routes: [
       GoRoute(
         path: '/',
@@ -87,7 +107,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             ),
           ),
           GoRoute(
-            path: 'signIn',
+            path: 'signin',
             name: AppRoute.signIn.name,
             pageBuilder: (context, state) => MaterialPage(
               fullscreenDialog: true,
