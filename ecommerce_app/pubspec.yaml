@@ -20,6 +20,8 @@ dependencies:
   go_router: ^17.0.0
   # A reactive caching and data-binding framework. Riverpod makes working with asynchronous code a breeze. 
   flutter_riverpod: ^3.0.3
+  # RxDart is an implementation of the popular ReactiveX api for asynchronous programming, leveraging the native Dart Streams api.
+  rxdart: ^0.28.0
 
 dev_dependencies:
   flutter_test:
