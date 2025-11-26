@@ -122,3 +122,6 @@ firebase-exports
 .env.dev
 .env.stg
 .env.prod
+
+# Ignore Flutter Test Coverage data & reports
+coverage/lcov.info
