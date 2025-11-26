@@ -3,10 +3,14 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../constants/test_products.dart';
+import '../../../utils/delay.dart';
 import '../domain/product.dart';
 
 class FakeProductsRepository {
+  final bool addDelay;
   final _products = kTestProducts;
+
+  const FakeProductsRepository({this.addDelay = true});
 
   List<Product> getProducts() => _products;
 
@@ -23,13 +27,13 @@ class FakeProductsRepository {
   }
 
   Future<List<Product>> fetchProducts() async {
-    await Future.delayed(const Duration(seconds: 2));
+    await delay(addDelay: addDelay);
     // throw Exception('Failed to fetch products');
     return Future.value(_products);
   }
 
   Stream<List<Product>> watchProducts() async* {
-    await Future.delayed(const Duration(seconds: 2));
+    await delay(addDelay: addDelay);
     yield _products;
   }
 
