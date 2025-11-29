@@ -38,9 +38,27 @@ void main() {
       final fakeAuthRepository = buildFakeAuthRepository();
       await fakeAuthRepository.signInWithEmailAndPassword(
           testEmail, testPassword);
+      // expect(
+      //     fakeAuthRepository.authStateChanges,
+      //     emitsInOrder([
+      //       testUser, //  after sign in
+      //       null, // after sign out
+      //     ]));
+      expect(fakeAuthRepository.currentUser, testUser);
+      expect(fakeAuthRepository.authStateChanges, emits(testUser));
       await fakeAuthRepository.signOut();
       expect(fakeAuthRepository.currentUser, null);
       expect(fakeAuthRepository.authStateChanges, emits(null));
+    });
+
+    test('sign in after dispose throws an exception', () {
+      final fakeAuthRepository = buildFakeAuthRepository();
+      fakeAuthRepository.dispose();
+      expect(
+        () => fakeAuthRepository.signInWithEmailAndPassword(
+            testEmail, testPassword),
+        throwsStateError,
+      );
     });
   });
 }

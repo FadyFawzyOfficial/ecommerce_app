@@ -17,13 +17,13 @@ class FakeAuthRepository {
   Future<void> signInWithEmailAndPassword(String email, String password) async {
     await delay(addDelay: addDelay);
     // throw Exception('Connection failed');
-    if (currentUser == null) _authenticateUser(email);
+    _authenticateUser(email);
   }
 
   Future<void> createUserWithEmailAndPassword(
       String email, String password) async {
     await delay(addDelay: addDelay);
-    if (currentUser == null) _authenticateUser(email);
+    _authenticateUser(email);
   }
 
   Future<void> signOut() async {
