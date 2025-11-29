@@ -7,13 +7,16 @@ import 'package:mocktail/mocktail.dart';
 class MockAuthRepository extends Mock implements FakeAuthRepository {}
 
 void main() {
+  late MockAuthRepository authRepository;
+  late AccountScreenController controller;
+
+  setUp(() {
+    authRepository = MockAuthRepository();
+    controller = AccountScreenController(authRepository: authRepository);
+  });
+
   group('AccountScreenController', () {
     test('initial state is AsyncValue.data', () {
-      // Setup
-      final authRepository = MockAuthRepository();
-      final controller =
-          AccountScreenController(authRepository: authRepository);
-
       // Run & Verify
       verifyNever(authRepository.signOut);
       expect(controller.state, AsyncData<void>(null));
@@ -22,13 +25,9 @@ void main() {
     test(
       'signOut success',
       () async {
-        // Setup
-        final authRepository = MockAuthRepository();
         when(authRepository.signOut).thenAnswer(
           (_) => Future.value(),
         );
-        final controller =
-            AccountScreenController(authRepository: authRepository);
 
         // Expect Later
         expectLater(
@@ -57,11 +56,8 @@ void main() {
       'signOut failure',
       () async {
         // Setup
-        final authRepository = MockAuthRepository();
         final exception = Exception('Connection failed');
         when(authRepository.signOut).thenThrow(exception);
-        final controller =
-            AccountScreenController(authRepository: authRepository);
 
         // Expect Later
         expectLater(
