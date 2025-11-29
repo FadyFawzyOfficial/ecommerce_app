@@ -19,59 +19,75 @@ void main() {
       expect(controller.state, AsyncData<void>(null));
     });
 
-    test('signOut success', () async {
-      // Setup
-      final authRepository = MockAuthRepository();
-      when(authRepository.signOut).thenAnswer(
-        (_) => Future.value(),
-      );
-      final controller =
-          AccountScreenController(authRepository: authRepository);
+    test(
+      'signOut success',
+      () async {
+        // Setup
+        final authRepository = MockAuthRepository();
+        when(authRepository.signOut).thenAnswer(
+          (_) => Future.value(),
+        );
+        final controller =
+            AccountScreenController(authRepository: authRepository);
 
-      // Expect Later
-      expectLater(
-        controller.stream,
-        emitsInOrder(const [
-          AsyncLoading<void>(),
-          AsyncData<void>(null),
-        ]),
-      );
+        // Expect Later
+        expectLater(
+          controller.stream,
+          emitsInOrder(const [
+            AsyncLoading<void>(),
+            AsyncData<void>(null),
+          ]),
+        );
 
-      // Run
-      await controller.signOut();
+        // Run
+        await controller.signOut();
 
-      // Verify
-      verify(authRepository.signOut).called(1);
-      // expect(controller.state, const AsyncData<void>(null));
-    });
+        // Verify
+        verify(authRepository.signOut).called(1);
+        // expect(controller.state, const AsyncData<void>(null));
+      },
+      //! A shorter test timeout guarantees that when our test hang, they fail quickly.
+      //! This can save us a lot of time & money specially when running
+      //! hundreds/thousands of tests on CI can be expensive, so we want them to
+      //! fast even when they fail.
+      timeout: const Timeout(Duration(milliseconds: 500)),
+    );
 
-    test('signOut failure', () async {
-      // Setup
-      final authRepository = MockAuthRepository();
-      final exception = Exception('Connection failed');
-      when(authRepository.signOut).thenThrow(exception);
-      final controller =
-          AccountScreenController(authRepository: authRepository);
+    test(
+      'signOut failure',
+      () async {
+        // Setup
+        final authRepository = MockAuthRepository();
+        final exception = Exception('Connection failed');
+        when(authRepository.signOut).thenThrow(exception);
+        final controller =
+            AccountScreenController(authRepository: authRepository);
 
-      // Expect Later
-      expectLater(
-        controller.stream,
-        emitsInOrder([
-          AsyncLoading<void>(),
-          predicate<AsyncValue<void>>((value) {
-            expect(value.hasError, true);
-            return true;
-          }),
-        ]),
-      );
+        // Expect Later
+        expectLater(
+          controller.stream,
+          emitsInOrder([
+            AsyncLoading<void>(),
+            predicate<AsyncValue<void>>((value) {
+              expect(value.hasError, true);
+              return true;
+            }),
+          ]),
+        );
 
-      // Run
-      await controller.signOut();
+        // Run
+        await controller.signOut();
 
-      // Verify
-      verify(authRepository.signOut).called(1);
-      // expect(controller.state.hasError, true);
-      // expect(controller.state, isA<AsyncError>());
-    });
+        // Verify
+        verify(authRepository.signOut).called(1);
+        // expect(controller.state.hasError, true);
+        // expect(controller.state, isA<AsyncError>());
+      },
+      //! A shorter test timeout guarantees that when our test hang, they fail quickly.
+      //! This can save us a lot of time & money specially when running
+      //! hundreds/thousands of tests on CI can be expensive, so we want them to
+      //! fast even when they fail.
+      timeout: const Timeout(Duration(milliseconds: 500)),
+    );
   });
 }
