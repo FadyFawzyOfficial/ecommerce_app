@@ -28,12 +28,21 @@ void main() {
       final controller =
           AccountScreenController(authRepository: authRepository);
 
+      // Expect Later
+      expectLater(
+        controller.stream,
+        emitsInOrder(const [
+          AsyncLoading<void>(),
+          AsyncData<void>(null),
+        ]),
+      );
+
       // Run
       await controller.signOut();
 
       // Verify
       verify(authRepository.signOut).called(1);
-      expect(controller.state, const AsyncData<void>(null));
+      // expect(controller.state, const AsyncData<void>(null));
     });
 
     test('signOut failure', () async {
@@ -44,13 +53,25 @@ void main() {
       final controller =
           AccountScreenController(authRepository: authRepository);
 
+      // Expect Later
+      expectLater(
+        controller.stream,
+        emitsInOrder([
+          AsyncLoading<void>(),
+          predicate<AsyncValue<void>>((value) {
+            expect(value.hasError, true);
+            return true;
+          }),
+        ]),
+      );
+
       // Run
       await controller.signOut();
 
       // Verify
       verify(authRepository.signOut).called(1);
-      expect(controller.state.hasError, true);
-      expect(controller.state, isA<AsyncError>());
+      // expect(controller.state.hasError, true);
+      // expect(controller.state, isA<AsyncError>());
     });
   });
 }
