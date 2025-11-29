@@ -14,12 +14,14 @@ void main() {
   group('FakeAuthRepository', () {
     test('currentUser is null', () {
       final fakeAuthRepository = buildFakeAuthRepository();
+      addTearDown(fakeAuthRepository.dispose);
       expect(fakeAuthRepository.currentUser, null);
       expect(fakeAuthRepository.authStateChanges, emits(null));
     });
 
     test('currentUser is not null after user is signed in', () async {
       final fakeAuthRepository = buildFakeAuthRepository();
+      addTearDown(fakeAuthRepository.dispose);
       await fakeAuthRepository.signInWithEmailAndPassword(
           testEmail, testPassword);
       expect(fakeAuthRepository.currentUser, testUser);
@@ -28,6 +30,7 @@ void main() {
 
     test('currentUser is not null after user registration', () async {
       final fakeAuthRepository = buildFakeAuthRepository();
+      addTearDown(fakeAuthRepository.dispose);
       await fakeAuthRepository.createUserWithEmailAndPassword(
           testEmail, testPassword);
       expect(fakeAuthRepository.currentUser, testUser);
@@ -36,6 +39,7 @@ void main() {
 
     test('currentUser is null after user is signed out', () async {
       final fakeAuthRepository = buildFakeAuthRepository();
+      addTearDown(fakeAuthRepository.dispose);
       await fakeAuthRepository.signInWithEmailAndPassword(
           testEmail, testPassword);
       // expect(
