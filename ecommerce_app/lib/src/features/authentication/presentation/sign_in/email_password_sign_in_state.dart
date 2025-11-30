@@ -19,7 +19,7 @@ mixin EmailAndPasswordValidators {
 /// State class for the email & password form.
 class EmailPasswordSignInState with EmailAndPasswordValidators {
   final EmailPasswordSignInFormType formType;
-  final AsyncValue value;
+  final AsyncValue<void> value;
 
   EmailPasswordSignInState({
     this.formType = EmailPasswordSignInFormType.signIn,
@@ -30,7 +30,7 @@ class EmailPasswordSignInState with EmailAndPasswordValidators {
 
   EmailPasswordSignInState copyWith({
     EmailPasswordSignInFormType? formType,
-    AsyncValue? value,
+    AsyncValue<void>? value,
   }) {
     return EmailPasswordSignInState(
       formType: formType ?? this.formType,

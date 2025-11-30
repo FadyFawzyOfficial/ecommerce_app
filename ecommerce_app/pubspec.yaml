@@ -27,6 +27,9 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: 5.0.0
+  # A Dart mock library which simplifies mocking with null safety support and no manual mocks or code generation.
+
+  mocktail: ^1.0.4
 
 # Custom app icon. For more info see: https://pub.dev/packages/flutter_launcher_icons
 flutter_icons:
